@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Squeezing a square</title>
+<style>
+:root{color-scheme:dark;--bg:#101929;--panel:#172439;--line:#354c6b;--muted:#c9d5e7;--ink:#f5f8ff;--mint:#74e9cf;--blue:#bccbff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
+main{width:min(100% - 28px,925px);margin:0 auto;padding:30px 0 40px}
+.eyebrow{font-size:.78rem;letter-spacing:.11em;color:var(--mint);font-weight:700;margin:0 0 4px}
+h1{font-size:clamp(1.86rem,6vw,3.6rem);line-height:1.03;margin:0 0 13px}
+.intro,.hint{color:var(--muted);margin:0 0 17px}
+fieldset{margin:0 0 17px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:var(--ink)}
+legend{padding:0 5px;font-weight:650}
+.choices{display:flex;flex-wrap:wrap;gap:7px}
+.choice{cursor:pointer}
+.choice input{position:absolute;opacity:0}
+.choice span{min-width:3.05rem;text-align:center;display:block;border:1px solid #617494;border-radius:8px;padding:8px 9px;color:var(--muted)}
+.choice input:checked+span{background:var(--mint);color:#132a2b;border-color:var(--mint);font-weight:700}
+.choice input:focus-visible+span,canvas:focus-visible{outline:2px solid white;outline-offset:3px}
+.shapes,.data{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.plot,.tile{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.plot h2,.tile h2{font-size:1rem;margin:0}
+.plot:first-child h2{color:var(--mint)}
+.plot:nth-child(2) h2{color:var(--blue)}
+canvas{display:block;width:100%;aspect-ratio:16/9;touch-action:pan-y;cursor:grab}
+canvas:active{cursor:grabbing}
+.dimensions{color:var(--muted);font-weight:600;margin:0}
+.width{font-size:1.3rem;font-variant-numeric:tabular-nums;margin:1px 0}
+.hint{font-size:.87rem;margin:.5rem 0 1.05rem}
+.tile h2{font-size:.83rem;color:var(--muted)}
+.tile p{font-size:1.29rem;margin:2px 0;line-height:1.23;overflow-wrap:anywhere}
+#summary{color:var(--mint);font-weight:650}
+details{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;color:var(--muted)}
+summary{cursor:pointer;color:var(--ink);font-weight:650}
+details p{margin:.6em 0}
+@media(max-width:530px){.shapes{gap:8px}.plot{padding:8px}.plot h2{font-size:.91rem}.dimensions{font-size:.86rem}.width{font-size:1.05rem}.data{gap:8px}.tile{padding:9px}.tile p{font-size:1rem}}
+</style>
+</head>
+<body>
+<main>
+<p class="eyebrow">LINEAR SYMPLECTIC MAPS</p>
+<h1>Squeezing a square</h1>
+<p class="intro">Stretch one axis by <i>s</i> and shrink the other by 1/<i>s</i>. Area stays fixed while mean width changes.</p>
+<fieldset>
+<legend>Squeeze factor <i>s</i></legend>
+<div class="choices">
+<label class="choice"><input name="squeeze" type="radio" value="1"><span>1</span></label>
+<label class="choice"><input name="squeeze" type="radio" value="5/4"><span>5/4</span></label>
+<label class="choice"><input name="squeeze" type="radio" value="3/2"><span>3/2</span></label>
+<label class="choice"><input name="squeeze" type="radio" value="2" checked><span>2</span></label>
+<label class="choice"><input name="squeeze" type="radio" value="5/2"><span>5/2</span></label>
+<label class="choice"><input name="squeeze" type="radio" value="3"><span>3</span></label>
+</div>
+</fieldset>
+<section class="shapes" aria-label="Equal-scale rotating diagrams">
+<div class="plot">
+<h2>Original</h2>
+<canvas id="original" width="640" height="360" tabindex="0" aria-label="Original square. Use left or right arrow keys to rotate both diagrams.">Original square of side length 2.</canvas>
+<p class="dimensions">2 × 2</p>
+<p class="width">8/π mean width</p>
+</div>
+<div class="plot">
+<h2>Squeezed</h2>
+<canvas id="squeezed" width="640" height="360" tabindex="0" aria-label="Squeezed square. Use left or right arrow keys to rotate both diagrams.">Squeezed rectangle with area 4.</canvas>
+<p class="dimensions" id="size">4 × 1</p>
+<p class="width" id="width">10/π mean width</p>
+</div>
+</section>
+<p class="hint">Drag a diagram to rotate both, or focus it and use the arrow keys. The plots share a scale.</p>
+<section class="data" aria-label="Exact values">
+<div class="tile"><h2>Area of each shape</h2><p>4</p></div>
+<div class="tile"><h2>Mean-width ratio</h2><p id="ratio">5/4</p></div>
+<div class="tile"><h2>Average factor C</h2><p id="factor">(5/4) I</p></div>
+<div class="tile"><h2>Added covariance C² − I</h2><p id="variance">(9/16) I</p></div>
+</section>
+<p id="summary" role="status">At s = 2, mean width rises by 25%.</p>
+<details>
+<summary>How these numbers enter the proof</summary>
+<p>The support of the squeezed square in direction (cos θ, sin θ) is <i>s</i>|cos θ| + (1/<i>s</i>)|sin θ|. Its mean width is twice the average of that support, or 4(<i>s</i> + 1/<i>s</i>)/π.</p>
+<p>The quarter-turn exchanges the squeeze with its inverse. Averaging the matrices gives C = ((<i>s</i> + 1/<i>s</i>)/2) I. A standard Gaussian plus independent noise of covariance C² − I has the same law as the Gaussian multiplied by C. Convexity gives the width comparison. The general proof is in the paper.</p>
+</details>
+</main>
+<script>
+"use strict";
+const chosen = [...document.querySelectorAll('input[name="squeeze"]')];
+const original = document.getElementById("original");
+const squeezed = document.getElementById("squeezed");
+const faces = [[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[4,5,6,7]];
+const palettes = [
+  ["#247d79","#226268","#2d8884","#53cfbd","#8bf1dc"],
+  ["#535da0","#414b86","#626bbc","#8ea7ff","#d5dfff"]
+];
+let angle = Math.PI / 8, s = 2;
+function gcd(a,b) { while (b) [a,b] = [b,a % b]; return a; }
+function rational(n,d) {
+  const g = gcd(n,d);
+  return d === g ? String(n / g) : (n / g) + "/" + (d / g);
+}
+function piFraction(n,d) {
+  const g = gcd(n,d);
+  return d === g ? (n / g) + "/π" : (n / g) + "/(" + (d / g) + "π)";
+}
+function scalar(n,d) {
+  const r = rational(n,d);
+  return r.includes("/") ? "(" + r + ") I" : r + " I";
+}
+function setText(id, text) { document.getElementById(id).textContent = text; }
+function project(x,y,z) {
+  const north = x * Math.sin(angle) + y * Math.cos(angle);
+  const east = x * Math.cos(angle) - y * Math.sin(angle);
+  return [320 + 83 * east, 180 + 50 * north - 88 * z, north + z];
+}
+function paint(canvas, a, b, colors) {
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  function path(points, fill, stroke, weight) {
+    ctx.beginPath();
+    points.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+    if (fill) {ctx.closePath(); ctx.fillStyle = fill; ctx.fill();}
+    if (stroke) {ctx.lineWidth = weight; ctx.strokeStyle = stroke; ctx.stroke();}
+  }
+  for (let i=-3;i<=3;i++) {
+    path([project(i,-3,-.21),project(i,3,-.21)],null,"#304863",2);
+    path([project(-3,i,-.21),project(3,i,-.21)],null,"#304863",2);
+  }
+  const footprint = [[-a,-b],[a,-b],[a,b],[-a,b]];
+  const pts = [-.15,.15].flatMap(z => footprint.map(([x,y]) => project(x,y,z)));
+  const sides = faces.slice(0,4).map((f,i) => [f,i,f.reduce((d,k) => d+pts[k][2],0)]);
+  sides.sort((first, second) => first[2] - second[2]);
+  for (const [f,i] of sides) path(f.map(k => pts[k]),colors[i%3],"#26384e",2);
+  path(faces[4].map(k => pts[k]),colors[3],colors[4],4);
+  for (const [x,y] of pts.slice(4)) {
+    ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fillStyle = "#f5f8ff"; ctx.fill();
+  }
+}
+function redraw() {
+  paint(original,1,1,palettes[0]);
+  paint(squeezed,s,1/s,palettes[1]);
+}
+function update() {
+  const [a,b=1] = chosen.find(i => i.checked).value.split("/").map(Number);
+  s = a / b;
+  const num = a*a+b*b, den = 2*a*b;
+  setText("size",rational(2*a,b)+" × "+rational(2*b,a));
+  setText("width",piFraction(8*num,den)+" mean width");
+  setText("ratio",rational(num,den));
+  setText("factor",scalar(num,den));
+  setText("variance",scalar(num*num-den*den,den*den));
+  const rounded = Math.round(10000*(num-den)/den)/100;
+  const rate = (100*(num-den)) % den === 0 ? rounded+"%" : "about "+rounded+"%";
+  setText("summary",a===b ? "At s = 1, mean width stays the same." : "At s = "+rational(a,b)+", mean width rises by "+rate+".");
+  redraw();
+}
+for (const option of chosen) option.addEventListener("change",update);
+for (const canvas of [original,squeezed]) {
+  let lastX = null;
+  canvas.addEventListener("pointerdown",event => {
+    lastX = event.clientX;
+    canvas.setPointerCapture(event.pointerId);
+  });
+  canvas.addEventListener("pointermove",event => {
+    if (lastX === null) return;
+    angle += (event.clientX-lastX)*.017;
+    lastX = event.clientX;
+    redraw();
+  });
+  canvas.addEventListener("lostpointercapture",() => {lastX = null;});
+  canvas.addEventListener("keydown",event => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    angle += event.key==="ArrowLeft" ? -.2 : .2;
+    redraw();
+  });
+}
+update();
+</script>
+</body>
+</html>

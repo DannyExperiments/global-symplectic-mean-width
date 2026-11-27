@@ -1,0 +1,91 @@
+\documentclass[11pt,a4paper]{amsart}
+\usepackage[hmargin=.88in,vmargin=.75in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Global mean-width minimization under linear symplectic maps}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\linespread{0.95}
+\DeclareMathSizes{8}{8}{8}{8}
+\DeclareMathSizes{9}{9}{8}{8}
+\DeclareMathSizes{10.95}{10.95}{8}{8}
+\renewcommand{\bibliofont}{\normalsize\raggedright}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\U}{\mathrm U}
+\title[Global symplectic mean-width minimization]{Global mean-width minimization under linear symplectic maps}
+\date{}
+\begin{document}
+\begin{abstract}
+A convex body invariant under the standard simultaneous quarter-turn minimizes mean width over its linear symplectic orbit. Equality holds precisely for orthogonal symplectic maps. The proof averages the positive symplectic factor with its inverse and realizes the averaged factor's Gaussian law by adding independent noise. This proves Ahn and Kerman's conjecture for toric bodies and gives a global linear corollary for the Lagrangian bidisk.
+\end{abstract}
+\maketitle
+
+\section{Statement}
+Let \(K\subset\mathbb R^{2n}\) be compact and convex with nonempty interior, where \(n\geq 1\). Write \(J(x,y)=(-y,x)\) for \(x,y\in\mathbb R^n\) and define
+\[
+  h_K(w)=\sup_{z\in K}\langle z,w\rangle,\qquad
+  M(K)=2\int_{S^{2n-1}}h_K(u)\,d\sigma(u),
+\]
+where \(\sigma\) is the uniform probability measure. This is the integral of the sum of the two opposing supports, since \(\sigma\) is invariant under antipodes. We use \(\Sp(2n,\mathbb R)=\{P:P^TJP=J\}\).
+
+\begin{theorem}\label{thm:main}
+If \(JK=K\), then \(M(PK)\ge M(K)\) for every \(P\in\Sp(2n,\mathbb R)\). Equality holds exactly when \(P\) is orthogonal, i.e., when \(P\in\U(n)\).
+\end{theorem}
+
+The toric case is Conjecture~1.6 of Ahn and Kerman \cite{ahn-kerman}. A toric body is invariant under rotations in each complex coordinate plane. Taking all rotation angles equal to \(\pi/2\) gives \(JK=K\). The square in Section~\ref{sec:example} already shows that this invariance condition is weaker than toric symmetry.
+
+\section{Proof of Theorem \ref{thm:main}}
+Set \(B=P^TP\), \(S=B^{1/2}\), and \(U=PS^{-1}\). Inverting \(P^TJP=J\) and using \(J^{-1}=-J\) gives \(PJP^T=J\). Consequently
+\[
+  BJB=P^T(PJP^T)P=J,\qquad J^{-1}BJ=B^{-1}.
+\]
+Since \(J\) is orthogonal, \(J^{-1}SJ\) is the positive square root of \(B^{-1}\), so \(J^{-1}SJ=S^{-1}\). The factor \(U\) is orthogonal, and therefore \(M(PK)=M(SK)\).
+
+Let \(G\) be a standard real Gaussian in dimension \(2n\). Its direction has law \(\sigma\) and is independent of its length. Homogeneity and \(S^T=S\) give
+\[
+  \frac{\E\|G\|}{2}M(SK)=\E h_K(SG).
+\]
+From \(JK=K\) we get \(h_K(Jw)=h_K(w)=h_K(J^{-1}w)\). Since \(JG\) has the law of \(G\), conjugacy gives \(\E h_K(S^{-1}G)=\E h_K(SG)\). Apply convexity of \(h_K\) to the two images of the same \(G\) to obtain
+\[
+  \E h_K(SG)\ \geq\ \E h_K(CG),\qquad C=\frac{S+S^{-1}}{2}.
+\]
+In an orthonormal eigenbasis of \(S\), the eigenvalues of \(C\) are \((s+s^{-1})/2\geq 1\) for \(s>0\). Hence \(C^2-I\) is positive semidefinite. Let \(Z\) be standard Gaussian and independent of \(G\), and put \(Y=(C^2-I)^{1/2}Z\). The centered Gaussians \(G+Y\) and \(CG\) both have covariance \(C^2\). By conditional Jensen,
+\[
+  \E h_K(CG)=\E h_K(G+Y)\ \geq\ \E h_K(G)
+  =\frac{\E\|G\|}{2}M(K).
+\]
+The support of a bounded body grows at most linearly, so these expectations exist.
+
+For strictness, \(S\ne I\) implies \(C^2-I\ne 0\). Invariance under \(J^2=-I\) centers \(K\) at zero. In particular if an open ball about \(a\) lies in \(K\), the opposite ball also lies in \(K\), and convexity places a positive-radius centered ball in \(K\). Thus \(h_K(y)\geq r\|y\|\) for some \(r>0\). The function
+\[
+    g\longmapsto \E h_K(g+Y)-h_K(g)
+\]
+is nonnegative by Jensen and continuous by the global Lipschitz bound on \(h_K\). At zero it is at least \(r\E\|Y\|>0\). The full support of \(G\) gives a strictly positive average of this gap and hence \(M(SK)>M(K)\). Finally, \(S=I\) is equivalent to \(P^TP=I\), which preserves width. This proves the theorem.
+
+\section{Toric bodies and the Lagrangian bidisk}
+\begin{corollary}
+Every toric convex body is globally minimizing under linear symplectic maps. The Lagrangian bidisk \(D_x^2\times D_y^2=\{(x,y):\|x\|,\|y\|\leq 1\}\) in \(\mathbb R^4\) is also globally minimizing under such maps. For either body the complete set of minimizing maps is the orthogonal symplectic group.
+\end{corollary}
+\begin{proof}
+Each body is \(J\)-invariant. On the bidisk \(J\) exchanges the two real coordinate disks and negates one of them.
+\end{proof}
+
+The earlier arXiv version claimed global linear results for toric bodies and the Lagrangian bidisk \cite[Theorems~1.18--1.19]{ahn-kerman-early}. Remark~1.7 of the corrected version withdraws the earlier toric proof. Theorem~1.4 and Proposition~1.12 of that version establish local results. The latter also shows that the Lagrangian bidisk is outside the unitary images of toric bodies, and its proof in Section~5.1 treats the positive symplectic factor. The global conclusion here is about the linear group. The nonlinear first derivative in Question~1.13 and the nonlinear global minimum in the authors' follow-up \cite[Conjecture~3.8]{ahn-kerman-followup} are separate problems. Proposition~1.14 of the corrected original paper credits Ramos's construction for a nonlinear global decrease of the bidisk's mean width.
+
+\section{Worked example and comparison}\label{sec:example}
+Take \(K=[-1,1]^2\) and \(S=\operatorname{diag}(s,s^{-1})\) with \(s>0\). For the unit direction \((\cos\theta,\sin\theta)\), the support of \(SK\) is \(s|\cos\theta|+s^{-1}|\sin\theta|\). Its area is \(4\), whereas its mean width is \(4(s+s^{-1})/\pi\). At \(s=2\), the square and its \(4\)-by-\(1\) image have mean widths \(8/\pi\) and \(10/\pi\), respectively. Here \(C=(5/4)I\), and \(C^2-I=(9/16)I\). The two inputs \(SG\) and \(S^{-1}G\) share coordinate signs, so the support midpoint inequality is an equality for this square. The mean width increases at the Gaussian Jensen step.
+
+Green's planar theorem \cite[Theorem~1]{green} already gives minimum perimeter under area-preserving affine maps when both second Fourier coefficients of the support vanish. Quarter-turn invariance cancels those coefficients, and planar mean width is perimeter divided by \(\pi\). In higher dimensions the full special-linear characterization of Giannopoulos and Milman \cite[Theorem~3.1]{giannopoulos-milman} uses an isotropic spherical support-function weight. The toric body \(B^2(1)\times B^2(4)\) illustrates the distinction. Its mean width is \(20/3\), since for a uniform direction in \(S^3\) the squared lengths in the two planes are uniform on \([0,1]\) and each length has mean \(2/3\). The real determinant-one map scaling the complex planes by \(2\) and \(1/2\) gives \(B^2(2)\times B^2(2)\), of width \(16/3\). That determinant-one map does not preserve the symplectic form.
+
+\section*{Replay and technical disclosure}
+The accompanying exact rational replay checks polar and covariance identities on finite fixtures, support-function comparisons, and the displayed square and disk examples. The proof establishes the general result. This release was internally reviewed. External peer review has not been completed. The release includes no proof-assistant formalization.
+
+ChatGPT Astra 6.2 (OpenAI) generated the recovered proof under human direction. OpenAI Codex independently reviewed the mathematics. GPT-6.2 Sol (OpenAI) checked primary sources and prepared the manuscript, exact replay and illustration. DannyExperiments is the project citation identity.
+
+\bibliographystyle{amsplain}
+\bibliography{references}
+\end{document}

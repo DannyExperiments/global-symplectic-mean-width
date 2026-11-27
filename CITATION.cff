@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "Cite this version of the research release."
+type: software
+title: "Global mean-width minimization under linear symplectic maps"
+authors:
+  - name: "DannyExperiments"
+version: "1.0.0"
+date-released: 2026-11-27
+doi: "10.5281/zenodo.24574098"
+url: "https://doi.org/10.5281/zenodo.24574098"
+repository-code: "https://github.com/DannyExperiments/global-symplectic-mean-width"
+keywords:
+  - "symplectic geometry"
+  - "mean width"
+  - "convex bodies"
+  - "toric convex body"
+  - "Lagrangian bidisk"
+  - "linear symplectic group"
+  - "Gaussian width"
+  - "support function"
+  - "polar decomposition"
+  - "Jensen inequality"
+preferred-citation:
+  type: software
+  title: "Global mean-width minimization under linear symplectic maps"
+  authors:
+    - name: "DannyExperiments"
+  version: "1.0.0"
+  date-released: 2026-11-27
+  doi: "10.5281/zenodo.24574098"
+  url: "https://doi.org/10.5281/zenodo.24574098"
+  repository-code: "https://github.com/DannyExperiments/global-symplectic-mean-width"

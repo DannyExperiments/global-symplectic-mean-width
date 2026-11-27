@@ -1,0 +1,5 @@
+Polar and covariance fixtures over exact rationals: 108.
+Support and reciprocal-image checks: 17496.
+Square explorer settings checked: 6.
+At squeeze 2: area 4, mean-width ratio 5/4, added covariance (9/16)I.
+Unequal disk radii example: determinant-one change decreases width from 20/3 to 16/3.
